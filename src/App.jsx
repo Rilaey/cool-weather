@@ -3,11 +3,12 @@ import BigWeatherCard from "./Components/BigWeatherCard/index";
 import SmallWeatherCard from "./Components/SmallWeatherCard/index";
 
 //! FIX TIME SETTINGS
-//! FORECAST ICONS
+//! CONVERT TEMP READINGS
+//! MAP THROUGH SMALL CARDS
 
 function App() {
   const [search, setSearch] = useState("");
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState([]);
 
   const apiKey = import.meta.env.VITE_REACT_API_KEY;
 
@@ -46,10 +47,7 @@ function App() {
     <>
       <div className="flex flex-col m-5">
         <div className="flex flex-col items-center justify-center flex-wrap">
-          <div
-            className="w-3/12 m-2 p-2"
-            style={{ border: "2px solid yellow" }}
-          >
+          <div className="w-3/12 m-2 p-2">
             <div className="flex flex-col items-center justify-center">
               <form
                 onSubmit={handleSearch}
@@ -58,7 +56,7 @@ function App() {
                 <div>
                   <h1 className="text-xl">Lets Check The Weather</h1>
                 </div>
-                <div className="flex justify-center items-center flex-wrap">
+                <div className="flex flex-row justify-center items-center flex-wrap">
                   <input
                     type="text"
                     placeholder="Enter A City..."
@@ -78,7 +76,11 @@ function App() {
             <>
               <div
                 className="w-9/12 h-auto p-2 m-2"
-                style={{ border: "2px solid red" }}
+                style={{
+                  backgroundColor: "#2F2F31",
+                  borderRadius: "25px",
+                  opacity: "0.8"
+                }}
               >
                 <BigWeatherCard
                   date={weatherData.list[0].dt_txt}
@@ -92,8 +94,26 @@ function App() {
                   icon={weatherData.list[0].weather[0].icon}
                 />
               </div>
-              <div className="m-2 p-2" style={{ border: "2px solid purple" }}>
-                <SmallWeatherCard />
+              <div className="m-2 p-2">
+                {weatherData.list.map((item, index) => {
+                  const targetIndices = [8, 16, 24, 32, 40];
+                  if (targetIndices.includes(index + 1)) {
+                    return (
+                      <SmallWeatherCard
+                        key={index}
+                        date={item.dt_txt}
+                        minTemp={item.main.temp_min}
+                        currentTemp={item.main.temp}
+                        highTemp={item.main.temp_max}
+                        windSpeed={item.wind.speed}
+                        humidity={item.main.humidity}
+                        description={item.weather[0].description}
+                        icon={item.weather[0].icon}
+                      />
+                    );
+                  }
+                  // return null; // Render nothing for other indices
+                })}
               </div>
             </>
           ) : (
