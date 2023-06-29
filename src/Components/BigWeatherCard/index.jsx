@@ -3,7 +3,7 @@
 export default function index({ date, minTemp, currentTemp, highTemp, windSpeed, cityName, humidity, description, icon, }) {
   return (
     <>
-      <div className="flex justify-evenly items-center">
+      <div className="flex justify-evenly items-center flex-wrap">
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-5xl m-2 text-white">{cityName}</h1>
           <h2 className="text-xl m-2 text-white">{date}</h2>
@@ -17,7 +17,7 @@ export default function index({ date, minTemp, currentTemp, highTemp, windSpeed,
         <div>
           <p className="m-1 text-white">Wind Speed: {windSpeed} MPH</p>
           <p className="m-1 text-white">Humidity: {humidity} %</p>
-          <p className="m-1 text-white">Description: {description}</p>
+          <p className="m-1 text-white">Description: {description}.</p>
         </div>
       </div>
     </>
